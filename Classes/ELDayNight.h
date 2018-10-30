@@ -12,50 +12,49 @@
 #import "Header.h"
 #import "ELDayNightManager.h"
 
-/** 语言切换 */
-#define LANGUAGE_NOTIFY(...) [[NSNotificationCenter defaultCenter] addObserverForName:Notification_languageChange object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {\
-__VA_ARGS__;\
-}];
-/** 夜景切换 */
-#define SCENE_NOTIFY(...) [[NSNotificationCenter defaultCenter] addObserverForName:Notification_sceneChange object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {\
-__VA_ARGS__;\
-}];
 
-/** 移除通知中心 */
-#define REMOVE_NOTIFY_LANGUAGE [[NSNotificationCenter defaultCenter] removeObserver:self name:Notification_languageChange object:nil]
-#define REMOVE_NOTIFY_SCENE [[NSNotificationCenter defaultCenter] removeObserver:self name:Notification_sceneChange object:nil]
+typedef NSArray * ELColorTuple;
+ELColorTuple ELMakeColorTuple(UIColor * dayColor, UIColor * nightColor);
+UIColor * ELColorFromTuple(ELColorTuple colors);
 
-#define REMOVE_NOTIFY_LANGUAGE_SCENE REMOVE_NOTIFY_LANGUAGE;\
-REMOVE_NOTIFY_SCENE;
+#define ELNotification_sceneChange @"ELNotification_sceneChange"
 
-#define DEALLOC_REMOVE_NOTIFY_LANGUAGE_SCENE - (void)dealloc{ \
-    REMOVE_NOTIFY_LANGUAGE_SCENE; \
-}
+#define REMOVE_NOTIFY_SCENE [[NSNotificationCenter defaultCenter] removeObserver:self name:ELNotification_sceneChange object:nil]
+
+
+@interface ELDayNight : NSObject
 
 /**
- Color的容器
+ 公共API 设置白天夜景
+
+ @param night 是否是夜景
  */
-@interface WZColorContainer : NSObject
++ (void)setNight:(BOOL)night;
 
-@property (nonatomic ,weak) id target;// 这里一定要用weak, 避免循环引用造成内存泄漏
-@property (nonatomic ,strong) NSMutableArray * values;
+/**
+ 获取当前是否是夜景
 
-- (instancetype)initWithTarget:(id)target;
-- (void)addSelector:(SEL)sel object:(id)object, ... NS_REQUIRES_NIL_TERMINATION;
+ @return BOOL 是否夜景
+ */
++ (BOOL)isNight;
 
 @end
 
+
+
+
+@class _ELColorContainer;
 @interface UIView (colorType)
-@property (nonatomic ,assign) APPColorType backgroundColorType;
-- (WZColorContainer *)colorContainer;
+@property (nonatomic, copy) ELColorTuple dnBackGroundColor;
+- (_ELColorContainer *)colorContainer;
 @end
 
 @interface UILabel (colorType)
-@property (nonatomic ,assign) APPColorType textColorType;
+@property (nonatomic ,copy) ELColorTuple dnTextColor;
 @end
 
 @interface UIButton (colorType)
-- (void)setTitleColorType:(APPColorType)type forState:(UIControlState)state;
+- (void)setDnTitleColor:(ELColorTuple)colorTuple forState:(UIControlState)state;
 - (void)setImageKey:(NSString *)key forState:(UIControlState)state;
 @end
 
@@ -65,9 +64,9 @@ REMOVE_NOTIFY_SCENE;
 @end
 
 @interface UITextField (colorType)
-@property (nonatomic ,assign) APPColorType textColorType;
+@property (nonatomic ,copy) ELColorTuple dnTextColor;
 @end
 
 @interface UITextView (colorType)
-@property (nonatomic ,assign) APPColorType textColorType;
+@property (nonatomic ,copy) ELColorTuple dnTextColor;
 @end

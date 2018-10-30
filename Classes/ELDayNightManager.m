@@ -8,6 +8,14 @@
 
 #import "ELDayNightManager.h"
 #import "Header.h"
+#import "ELDayNight.h"
+
+@interface ELDayNightManager ()
+{
+    NSMutableArray * _dayNightObjs;
+}
+
+@end
 
 @implementation ELDayNightManager
 
@@ -15,7 +23,7 @@
 - (void)modify
 {
     self.isNight = !self.isNight;
-    [[NSNotificationCenter defaultCenter] postNotificationName:Notification_sceneChange object:nil];
+    [ELDayNight setNight:self.isNight];
 }
 
 
@@ -28,6 +36,27 @@
     });
     return instance;
 }
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        [self _setUp];
+    }
+    return self;
+}
+
+- (void)_setUp
+{
+    _dayNightObjs = [NSMutableArray array];
+}
+
+
+- (void)addDayNightTarget:(id)target
+{
+    [_dayNightObjs addObject:target];
+}
+
 
 + (instancetype)allocWithZone:(struct _NSZone *)zone
 {

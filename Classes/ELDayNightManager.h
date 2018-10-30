@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+
+
 @interface ELDayNightManager : NSObject<NSCopying>
 
 + (instancetype)defaultManager;

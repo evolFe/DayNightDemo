@@ -18,8 +18,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    self.view.backgroundColorType = AppColorBackgroundDark;
-    
+//    self.view.backgroundColorType = AppColorBackgroundDark;
+    self.view.dnBackGroundColor = ELMakeColorTuple(UIColorFromRGB(0xedeeef), UIColorFromRGB(0x3a3928));
     UIImageView * imageView = [[UIImageView alloc] init];
     imageView.imageKey = @"mine_bg";
     [imageView sizeToFit];
@@ -28,15 +28,15 @@
     UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(20, CGRectGetMaxY(imageView.frame), 200, 30)];
     label.font = [UIFont systemFontOfSize:15];
     label.text = @"这是一个 UILabel";
-    label.textColorType = APPColorTitle222;
+    label.dnTextColor = ELMakeColorTuple(UIColorFromRGB(0x222222), UIColorFromRGB(0xdcc787));
     [self.view addSubview:label];
     
     
     UIButton * button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.backgroundColorType = AppColorBackgroundLight;
+    button.dnBackGroundColor = ELMakeColorTuple(UIColorFromRGB(0x7c936e), UIColorFromRGB(0x4b4a38));
     [button setFrame:CGRectMake(CGRectGetWidth(self.view.frame)/2 - 30, CGRectGetHeight(self.view.frame) - 100, 60, 30)];
     [button setTitle:@"Change" forState:UIControlStateNormal];
-    [button setTitleColorType:AppColorWhite forState:UIControlStateNormal];
+    [button setDnTitleColor:ELMakeColorTuple([UIColor whiteColor], UIColorFromRGB(0xdcc787)) forState:UIControlStateNormal];
     button.titleLabel.font = [UIFont systemFontOfSize:15];
     [button addTarget:self action:@selector(dayNightChange:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];

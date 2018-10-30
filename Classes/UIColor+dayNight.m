@@ -64,28 +64,4 @@
     return [self colorWithHexString:color alpha:1.0f];
 }
 
-#define day_night_color(day_color, night_color) !([ELDayNightManager defaultManager].isNight) ? day_color : night_color
-+ (UIColor *)colorWithType:(APPColorType)type
-{
-    switch (type) {
-        case APPColorMain:
-            return day_night_color(UIColorFromRGB(0x7c936e), UIColorFromRGB(0xdcc787));
-        case AppColorWhite:
-            return day_night_color([UIColor whiteColor], UIColorFromRGB(0xdcc787));
-        case AppColorBackgroundDark:
-            return day_night_color(UIColorFromRGB(0xedeeef), UIColorFromRGB(0x3a3928));
-        case AppColorBackgroundLight:
-            return day_night_color(UIColorFromRGB(0x7c936e), UIColorFromRGB(0x4b4a38));
-        case APPColorBGGrayLight:
-            return day_night_color(UIColorFromRGB(0xe8e8e8), UIColorFromRGB(0x4b4a38));
-        case APPColorBGWhiteDark:
-            return day_night_color([UIColor whiteColor], UIColorFromRGB(0x3a3928));
-        case APPColorTitle222:
-            return day_night_color(UIColorFromRGB(0x222222), UIColorFromRGB(0xdcc787));
-        default:
-            break;
-    }
-    return [UIColor clearColor];
-}
-
 @end

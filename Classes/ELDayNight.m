@@ -13,7 +13,42 @@
 
 static const int kColortContainerKey;
 
-@implementation WZColorContainer
+ELColorTuple ELMakeColorTuple(UIColor * dayColor, UIColor * nightColor) {
+    return @[dayColor, nightColor];
+}
+UIColor * ELColorFromTuple(ELColorTuple colors) {
+    return colors[[ELDayNight isNight]];
+}
+
+@implementation ELDayNight
+
+static BOOL isNight = NO;
+
++ (void)setNight:(BOOL)night {
+    isNight = night;
+    [[NSNotificationCenter defaultCenter] postNotificationName:ELNotification_sceneChange object:nil];
+}
+
++ (BOOL)isNight {
+    return isNight;
+}
+
+@end
+
+/**
+ Color的容器
+ */
+@interface _ELColorContainer : NSObject
+
+@property (nonatomic ,weak) id target;// 这里一定要用weak, 避免循环引用造成内存泄漏
+@property (nonatomic ,strong) NSMutableArray * values;
+
+- (instancetype)initWithTarget:(id)target;
+- (void)addSelector:(SEL)sel object:(id)object, ... NS_REQUIRES_NIL_TERMINATION;
+
+@end
+
+@implementation _ELColorContainer
 
 - (instancetype)initWithTarget:(id)target
 {
@@ -22,40 +57,35 @@ static const int kColortContainerKey;
         /** 弱引用target */
         self.target = target;
         _values = [NSMutableArray array];
-        WS(ws);
-        [[NSNotificationCenter defaultCenter] addObserverForName:Notification_sceneChange object:nil queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification * _Nonnull note) {
-            __strong __typeof (ws) sself = ws;
-            if (!sself) return;
-            for (NSDictionary * dict in sself.values) {
-                NSString * selector = dict[@"sel"];
-                id obj = dict[@"obj"];
-                SEL _sel = NSSelectorFromString(selector);
-                NSMethodSignature * methodSignature = [[ws.target class] instanceMethodSignatureForSelector:_sel];
-                if(methodSignature == nil)
-                {
-                    @throw [NSException exceptionWithName:@"抛异常错误" reason:@"没有这个方法，或者方法名字错误" userInfo:nil];
-                }
-                NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
-                [invocation setTarget:ws.target];
-                [invocation setSelector:_sel];
-                NSInteger argsCount = methodSignature.numberOfArguments - 2; // 参数里有 self, _cmd  所以-2
-                NSInteger paramsCount = [obj count];
-                if (paramsCount >= argsCount) {
-                    for (int i = 0; i < argsCount; i++) {
-                        id param = obj[i];
-                        [invocation setArgument:&param atIndex:i+2];
-                    }
-                    [invocation invoke];
-                }
-            }
-        }];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(dayNightChange) name:ELNotification_sceneChange object:nil];
     }
     return self;
 }
 
-- (void)dealloc
-{
-    REMOVE_NOTIFY_SCENE;
+- (void)dayNightChange {
+    for (NSDictionary * dict in self.values) {
+        NSString * selector = dict[@"sel"];
+        id obj = dict[@"obj"];
+        SEL _sel = NSSelectorFromString(selector);
+        NSMethodSignature * methodSignature = [[self.target class] instanceMethodSignatureForSelector:_sel];
+        if(methodSignature == nil)
+        {
+            @throw [NSException exceptionWithName:@"抛异常错误" reason:@"没有这个方法，或者方法名字错误" userInfo:nil];
+        }
+        NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:methodSignature];
+        [invocation setTarget:self.target];
+        [invocation setSelector:_sel];
+        NSInteger argsCount = methodSignature.numberOfArguments - 2; // 参数里有 self, _cmd  所以-2
+        NSInteger paramsCount = [obj count];
+        if (paramsCount >= argsCount) {
+            for (int i = 0; i < argsCount; i++) {
+                id param = obj[i];
+                [invocation setArgument:&param atIndex:i+2];
+            }
+            [invocation invoke];
+        }
+    }
 }
 
 - (void)addSelector:(SEL)sel object:(id)object, ... NS_REQUIRES_NIL_TERMINATION
@@ -78,29 +108,26 @@ static const int kColortContainerKey;
 
 @implementation UIView (colorType)
 
-- (APPColorType)backgroundColorType
-{
-    return APPColorTypeNone;
-}
-- (void)setBackgroundColorType:(APPColorType)backgroundColorType
-{
-    self.backgroundColor = [UIColor colorWithType:backgroundColorType];
-    WZColorContainer * container = self.colorContainer;
-    [container addSelector:@selector(_setBackgroundColorType:) object:@(backgroundColorType), nil];
+- (void)setDnBackGroundColor:(ELColorTuple)dnBackGroundColor {
+    self.backgroundColor = ELColorFromTuple(dnBackGroundColor);
+    _ELColorContainer * container = self.colorContainer;
+    [container addSelector:@selector(_setDnBackGroundColor:) object:dnBackGroundColor, nil];
 }
 
-
-- (void)_setBackgroundColorType:(id)type
-{
-    self.backgroundColor = [UIColor colorWithType:[type integerValue]];
+- (void)_setDnBackGroundColor:(ELColorTuple)dnBackGroundColor {
+    self.backgroundColor = ELColorFromTuple(dnBackGroundColor);
 }
 
-
-- (WZColorContainer *)colorContainer
+- (ELColorTuple)dnBackGroundColor
 {
-    WZColorContainer * container = objc_getAssociatedObject(self, &kColortContainerKey);
+    return nil;
+}
+
+- (_ELColorContainer *)colorContainer
+{
+    _ELColorContainer * container = objc_getAssociatedObject(self, &kColortContainerKey);
     if (container == nil) {
-        container = [[WZColorContainer alloc] initWithTarget:self];
+        container = [[_ELColorContainer alloc] initWithTarget:self];
         objc_setAssociatedObject(self, &kColortContainerKey, container, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return container;
@@ -110,41 +137,38 @@ static const int kColortContainerKey;
 
 @implementation UILabel (colorType)
 
-- (APPColorType)textColorType
-{
-    return APPColorTypeNone;
+- (ELColorTuple)dnTextColor {
+    return nil;
 }
-- (void)setTextColorType:(APPColorType)type
-{
-    self.textColor = [UIColor colorWithType:type];
-    WZColorContainer * container = self.colorContainer;
-    [container addSelector:@selector(_setTextColorType:) object:@(type), nil];
+
+- (void)setDnTextColor:(ELColorTuple)dnTextColor {
+    self.textColor = ELColorFromTuple(dnTextColor);
+    _ELColorContainer * container = self.colorContainer;
+    [container addSelector:@selector(_setDnTextColor:) object:dnTextColor, nil];
 }
-- (void)_setTextColorType:(id)type
-{
-    self.textColor = [UIColor colorWithType:[type integerValue]];
+- (void)_setDnTextColor:(ELColorTuple)dnTextColor {
+    self.textColor = ELColorFromTuple(dnTextColor);
 }
 
 @end
 
 @implementation UIButton (colorType)
 
-- (void)setTitleColorType:(APPColorType)type forState:(UIControlState)state
-{
-    [self setTitleColor:[UIColor colorWithType:type] forState:state];
-    WZColorContainer * container = self.colorContainer;
-    [container addSelector:@selector(_setTitleColorType:state:) object:@(type), @(state), nil];
+- (void)setDnTitleColor:(ELColorTuple)colorTuple forState:(UIControlState)state {
+    [self setTitleColor:ELColorFromTuple(colorTuple) forState:state];
+    _ELColorContainer * container = self.colorContainer;
+    [container addSelector:@selector(_setDnTitleColor:forState:) object:colorTuple, @(state), nil];
 }
-- (void)_setTitleColorType:(id)type state:(id)state
-{
-    [self setTitleColor:[UIColor colorWithType:[type integerValue]] forState:(UIControlState)[state integerValue]];
+
+- (void)_setDnTitleColor:(ELColorTuple)colorTuple forState:(id)state {
+    [self setTitleColor:ELColorFromTuple(colorTuple) forState:(UIControlState)[state integerValue]];
 }
 
 /** 按钮 设置图片 */
 - (void)setImageKey:(NSString *)key forState:(UIControlState)state
 {
     [self setImage:[UIImage imageNamed:key.nightValue] forState:UIControlStateNormal];
-    WZColorContainer * container = self.colorContainer;
+    _ELColorContainer * container = self.colorContainer;
     [container addSelector:@selector(_setImageKey:forState:) object:key, @(state), nil];
 }
 - (void)_setImageKey:(NSString *)key forState:(id)state
@@ -155,6 +179,7 @@ static const int kColortContainerKey;
 @end
 
 @implementation UIImageView (colorType)
+
 - (NSString *)imageKey
 {
     return nil;
@@ -162,7 +187,7 @@ static const int kColortContainerKey;
 - (void)setImageKey:(NSString *)imageKey
 {
     self.image = [UIImage imageNamed:imageKey.nightValue];
-    WZColorContainer * container = self.colorContainer;
+    _ELColorContainer * container = self.colorContainer;
     [container addSelector:@selector(_setImageKey:) object:imageKey, nil];
 }
 - (void)_setImageKey:(NSString *)imageKey
@@ -173,7 +198,7 @@ static const int kColortContainerKey;
 - (void)setImageKey:(NSString *)imageKey stretchPoint:(CGPoint)strechPoint
 {
     self.image = [[UIImage imageNamed:imageKey.nightValue] stretchableImageWithLeftCapWidth:strechPoint.x topCapHeight:strechPoint.y];
-    WZColorContainer * container = self.colorContainer;
+    _ELColorContainer * container = self.colorContainer;
     [container addSelector:@selector(_setImageKey:stretchPoint:) object:imageKey,[NSValue valueWithCGPoint:strechPoint],nil];
 
 }
@@ -187,38 +212,37 @@ static const int kColortContainerKey;
 
 @implementation UITextField (colorType)
 
-- (APPColorType)textColorType
-{
-    return APPColorTypeNone;
-}
-- (void)setTextColorType:(APPColorType)type
-{
-    self.textColor = [UIColor colorWithType:type];
-    WZColorContainer * container = self.colorContainer;
-    [container addSelector:@selector(_setTextColorType:) object:@(type), nil];
-}
-- (void)_setTextColorType:(id)type
-{
-    self.textColor = [UIColor colorWithType:[type integerValue]];
+- (ELColorTuple)dnTextColor {
+    return nil;
 }
 
+- (void)setDnTextColor:(ELColorTuple)dnTextColor {
+    self.textColor = ELColorFromTuple(dnTextColor);
+    _ELColorContainer * container = self.colorContainer;
+    [container addSelector:@selector(_setDnTextColor:) object:dnTextColor, nil];
+
+}
+
+- (void)_setDnTextColor:(ELColorTuple)dnTextColor {
+    self.textColor = ELColorFromTuple(dnTextColor);
+}
 @end
 
 @implementation UITextView (colorType)
 
-- (APPColorType)textColorType
-{
-    return APPColorTypeNone;
+- (ELColorTuple)dnTextColor {
+    return nil;
 }
-- (void)setTextColorType:(APPColorType)type
-{
-    self.textColor = [UIColor colorWithType:type];
-    WZColorContainer * container = self.colorContainer;
-    [container addSelector:@selector(_setTextColorType:) object:@(type), nil];
+
+- (void)setDnTextColor:(ELColorTuple)dnTextColor {
+    self.textColor = ELColorFromTuple(dnTextColor);
+    _ELColorContainer * container = self.colorContainer;
+    [container addSelector:@selector(_setDnTextColor:) object:dnTextColor, nil];
+    
 }
-- (void)_setTextColorType:(id)type
-{
-    self.textColor = [UIColor colorWithType:[type integerValue]];
+
+- (void)_setDnTextColor:(ELColorTuple)dnTextColor {
+    self.textColor = ELColorFromTuple(dnTextColor);
 }
 
 @end

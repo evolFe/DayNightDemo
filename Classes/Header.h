@@ -11,6 +11,4 @@
 
 #define WS(__wsSelf__) __weak __typeof(&*self)__wsSelf__ = self
 
-#define Notification_sceneChange @"Notification_sceneChange"
-
 #endif /* Header_h */
