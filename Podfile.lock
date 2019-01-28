@@ -1,0 +1,16 @@
+PODS:
+  - FDayNight (0.1.0)
+
+DEPENDENCIES:
+  - FDayNight (from `FdayNight/FDayNight`)
+
+EXTERNAL SOURCES:
+  FDayNight:
+    :path: FdayNight/FDayNight
+
+SPEC CHECKSUMS:
+  FDayNight: 279eec1bb0ad879dd802968812b7206f3bf733b6
+
+PODFILE CHECKSUM: c7e6e73ace608a6bfe1dd74b914f313cdcb5e4d5
+
+COCOAPODS: 1.5.0

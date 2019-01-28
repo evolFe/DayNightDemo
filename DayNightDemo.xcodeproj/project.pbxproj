@@ -13,10 +13,7 @@
 		1B3A094521461222007A4154 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1B3A094421461222007A4154 /* Assets.xcassets */; };
 		1B3A094821461222007A4154 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1B3A094621461222007A4154 /* LaunchScreen.storyboard */; };
 		1B3A094B21461222007A4154 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A094A21461222007A4154 /* main.m */; };
-		1B3A095A2146136C007A4154 /* UIColor+dayNight.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A09592146136B007A4154 /* UIColor+dayNight.m */; };
-		1B3A096221461437007A4154 /* ELDayNight.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A096021461437007A4154 /* ELDayNight.m */; };
-		1B3A0965214615DB007A4154 /* ELDayNightManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A0964214615DB007A4154 /* ELDayNightManager.m */; };
-		1B3A0968214617BC007A4154 /* NSString+dayNight.m in Sources */ = {isa = PBXBuildFile; fileRef = 1B3A0967214617BC007A4154 /* NSString+dayNight.m */; };
+		655A17F345DE9D1739E8C401 /* libPods-DayNightDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F7C16A9A24556D161A9251C2 /* libPods-DayNightDemo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,15 +27,9 @@
 		1B3A094721461222007A4154 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1B3A094921461222007A4154 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1B3A094A21461222007A4154 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		1B3A09582146136B007A4154 /* UIColor+dayNight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+dayNight.h"; sourceTree = "<group>"; };
-		1B3A09592146136B007A4154 /* UIColor+dayNight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+dayNight.m"; sourceTree = "<group>"; };
-		1B3A095E214613C4007A4154 /* Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Header.h; sourceTree = "<group>"; };
-		1B3A096021461437007A4154 /* ELDayNight.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ELDayNight.m; sourceTree = "<group>"; };
-		1B3A096121461437007A4154 /* ELDayNight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ELDayNight.h; sourceTree = "<group>"; };
-		1B3A0963214615DB007A4154 /* ELDayNightManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ELDayNightManager.h; sourceTree = "<group>"; };
-		1B3A0964214615DB007A4154 /* ELDayNightManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ELDayNightManager.m; sourceTree = "<group>"; };
-		1B3A0966214617BC007A4154 /* NSString+dayNight.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSString+dayNight.h"; sourceTree = "<group>"; };
-		1B3A0967214617BC007A4154 /* NSString+dayNight.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSString+dayNight.m"; sourceTree = "<group>"; };
+		7A6724B5AB9B961AB28C3B38 /* Pods-DayNightDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DayNightDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-DayNightDemo/Pods-DayNightDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		9933301BAEAA30908102A945 /* Pods-DayNightDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DayNightDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-DayNightDemo/Pods-DayNightDemo.release.xcconfig"; sourceTree = "<group>"; };
+		F7C16A9A24556D161A9251C2 /* libPods-DayNightDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DayNightDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,18 +37,28 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				655A17F345DE9D1739E8C401 /* libPods-DayNightDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		16A578CA95AF92DB2FB8CD3F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F7C16A9A24556D161A9251C2 /* libPods-DayNightDemo.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		1B3A092F21461220007A4154 = {
 			isa = PBXGroup;
 			children = (
-				1B3A09512146127E007A4154 /* Classes */,
 				1B3A093A21461220007A4154 /* DayNightDemo */,
 				1B3A093921461220007A4154 /* Products */,
+				1F934FC1D6921D1263F91ADA /* Pods */,
+				16A578CA95AF92DB2FB8CD3F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,20 +86,13 @@
 			path = DayNightDemo;
 			sourceTree = "<group>";
 		};
-		1B3A09512146127E007A4154 /* Classes */ = {
+		1F934FC1D6921D1263F91ADA /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1B3A09582146136B007A4154 /* UIColor+dayNight.h */,
-				1B3A09592146136B007A4154 /* UIColor+dayNight.m */,
-				1B3A0966214617BC007A4154 /* NSString+dayNight.h */,
-				1B3A0967214617BC007A4154 /* NSString+dayNight.m */,
-				1B3A096121461437007A4154 /* ELDayNight.h */,
-				1B3A096021461437007A4154 /* ELDayNight.m */,
-				1B3A095E214613C4007A4154 /* Header.h */,
-				1B3A0963214615DB007A4154 /* ELDayNightManager.h */,
-				1B3A0964214615DB007A4154 /* ELDayNightManager.m */,
+				7A6724B5AB9B961AB28C3B38 /* Pods-DayNightDemo.debug.xcconfig */,
+				9933301BAEAA30908102A945 /* Pods-DayNightDemo.release.xcconfig */,
 			);
-			path = Classes;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -108,6 +102,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1B3A094E21461222007A4154 /* Build configuration list for PBXNativeTarget "DayNightDemo" */;
 			buildPhases = (
+				E3B6067A6A283A6E955CDB0A /* [CP] Check Pods Manifest.lock */,
 				1B3A093421461220007A4154 /* Sources */,
 				1B3A093521461220007A4154 /* Frameworks */,
 				1B3A093621461220007A4154 /* Resources */,
@@ -166,15 +161,32 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		E3B6067A6A283A6E955CDB0A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DayNightDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1B3A093421461220007A4154 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B3A095A2146136C007A4154 /* UIColor+dayNight.m in Sources */,
-				1B3A0968214617BC007A4154 /* NSString+dayNight.m in Sources */,
-				1B3A096221461437007A4154 /* ELDayNight.m in Sources */,
-				1B3A0965214615DB007A4154 /* ELDayNightManager.m in Sources */,
 				1B3A094021461220007A4154 /* ViewController.m in Sources */,
 				1B3A094B21461222007A4154 /* main.m in Sources */,
 				1B3A093D21461220007A4154 /* AppDelegate.m in Sources */,
@@ -315,6 +327,7 @@
 		};
 		1B3A094F21461222007A4154 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A6724B5AB9B961AB28C3B38 /* Pods-DayNightDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -332,6 +345,7 @@
 		};
 		1B3A095021461222007A4154 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9933301BAEAA30908102A945 /* Pods-DayNightDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
